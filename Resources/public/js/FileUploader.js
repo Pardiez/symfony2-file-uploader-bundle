@@ -18,12 +18,14 @@ function PunkAveFileUploader(options)
   self.addExistingFiles = function(files)
   {
     _.each(files, function(file) {
-      appendEditableImage({
-        // cmsMediaUrl is a global variable set by the underscoreTemplates partial of MediaItems.html.twig
-        'thumbnail_url': viewUrl + '/thumbnails/' + file,
+      var params = {
         'url': viewUrl + '/originals/' + file,
         'name': file
-        });
+      };
+      for (var i = options.versions.length - 1; i >= 0; i--) {
+        params[options.versions[i] + '_url'] = viewUrl + '/' + options.versions[i] + '/' + file
+      };
+      appendEditableImage(params);
     });
   };
 
